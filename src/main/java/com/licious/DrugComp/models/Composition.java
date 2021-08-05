@@ -1,6 +1,7 @@
 package com.licious.DrugComp.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity(name = "compositions")
+@Table(name = "compositions")
 @Data
 public class Composition {
 
@@ -21,6 +22,9 @@ public class Composition {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
+
+    @OneToMany(mappedBy = "composition")
+    private List<CompositionIngredient> compositionIngredientList;
 
 
 }
