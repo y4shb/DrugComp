@@ -1,9 +1,14 @@
 package com.licious.DrugComp.models;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Table(name = "molecules")
 @Data
 public class Molecule {

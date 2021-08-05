@@ -1,7 +1,14 @@
 package com.licious.DrugComp.models;
 
+import lombok.*;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class MoleculeIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

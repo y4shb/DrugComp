@@ -1,9 +1,14 @@
 package com.licious.DrugComp.models;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity(name = "composition_ingredients")
 @Data
 public class CompositionIngredient {
@@ -12,11 +17,11 @@ public class CompositionIngredient {
     private int id;
 
     //add foreign key to Composition.id
-    @JoinColumn(name = "composition_id", referencedColumnName = "composition.id")
-    private int compositionId;
+    @JoinColumn(name = "composition_id")
+    private Composition composition;
     //add foreign key to Ingredient.id
-    @JoinColumn(name = "ingredient_id", referencedColumnName = "ingredient.id")
-    private int ingredientId;
+    @JoinColumn(name = "ingredient_id")
+    private Ingredient ingredient;
 
     private String unit;
     private Float strength;
