@@ -9,7 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity(name = "composition_ingredients")
+@Table(name = "composition_ingredients")
 @Data
 public class CompositionIngredient {
     @Id
@@ -17,10 +17,10 @@ public class CompositionIngredient {
     private int id;
 
     //add foreign key to Composition.id
-    @JoinColumn(name = "composition_id")
+    @JoinColumn(name = "composition_id",referencedColumnName = "id")
     private Composition composition;
     //add foreign key to Ingredient.id
-    @JoinColumn(name = "ingredient_id")
+    @JoinColumn(name = "ingredient_id",referencedColumnName = "id")
     private Ingredient ingredient;
 
     private String unit;

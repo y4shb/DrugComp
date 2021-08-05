@@ -9,6 +9,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Table(name = "molecule_ingredients")
+@Data
 public class MoleculeIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -13,8 +13,13 @@ public class CompositionController {
     @Autowired
     CompositionIngredientService compositionIngredientService;
 
-    @GetMapping("/composition")
-    public CompositionResponse getCompositionDetailsbyCompId(@RequestParam int compId) {
+    //First API
+    @GetMapping("/composition/id")
+    public CompositionResponse getCompositionDetailsbyCompId(@RequestParam("composition_id") int compId) {
         return compositionIngredientService.getCompositionDetailsById(compId);
+    }
+    @GetMapping("/composition/name")
+    public CompositionResponse getCompositionDetailsbyCompName(@RequestParam("composition_id") String compName) {
+        return compositionIngredientService.getCompositionDetailsByName(compName);
     }
 }
