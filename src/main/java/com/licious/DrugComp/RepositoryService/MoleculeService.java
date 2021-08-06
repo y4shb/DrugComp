@@ -15,7 +15,4 @@ public class MoleculeService {
     public Molecule getMoleculeById(int id) {
         return moleculeRepository.findById(id);
     }
-    public List<Molecule> getMoleculeByName(String name) {
-        return moleculeRepository.findByName(name);
-    }
 }

@@ -10,7 +10,4 @@ public interface MoleculeIngredientRepository extends JpaRepository<MoleculeIngr
     MoleculeIngredient findById(int id);
     List<MoleculeIngredient> findByMoleculeId(int moleculeId);
     List<MoleculeIngredient> findByIngredientId(int ingredientId);
-
-    @Query(value = "select ingredient_id from molecule_ingredients where molecule_id=?1",nativeQuery = true)
-    List<Integer> findAllMoleculeIngredientsByMoleculeId(int molecule_id);
 }

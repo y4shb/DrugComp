@@ -16,9 +16,9 @@ public class IngredientController {
     @Autowired
     IngredientService ingredientService;
 
-    /*
-    * SECOND API : Give all compositions where ingredient is X with strength S and unit U
-    * */
+
+    // SECOND API : Give all compositions where ingredient is X with strength S and unit U
+
     @GetMapping("/ingredient/ISU/id")
     public List<Composition> getCompositionDetailsbyISUId(@RequestParam("ingredient_id") int ingredientId,
                                                           @RequestParam("strength") float strength,
@@ -32,9 +32,6 @@ public class IngredientController {
         return ingredientService.getCompositionsByIngredientNameStrengthUnit(ingredientName, strength, unit);
     }
 
-
-
-
     // THIRD API : Give all compositions where ingredient is X with strength S and unit U and rx_required is Y
 
     @GetMapping("/ingredient/ISURx/name")
@@ -46,22 +43,6 @@ public class IngredientController {
         return compositionList;
     }
 
-    /*
 
-    @GetMapping("ingredient/ISURx/id")
-    public List<Composition> getCompositionDetailsByISURxId(@RequestParam("ingredient_id") int ingredientId,
-                                                              @RequestParam("strength") float strength,
-                                                              @RequestParam("unit") String unit,
-                                                              @RequestParam("rx_required") Boolean rxRequired) {
-        return ingredientService.getCompositionsByIngredientIdStrengthUnitRx(ingredientId, strength, unit, rxRequired);
-    }
-    @GetMapping("ingredient/ISURx/name")
-    public List<Composition> getCompositionDetailsByISURxName(@RequestParam("name") String ingredientName,
-                                                              @RequestParam("strength") float strength,
-                                                              @RequestParam("unit") String unit,
-                                                              @RequestParam("rx_required") Boolean rxRequired) {
-        return ingredientService.getCompositionsByIngredientNameStrengthUnitRx(ingredientName, strength, unit, rxRequired);
-    }
-   */
 
 }

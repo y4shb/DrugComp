@@ -88,7 +88,7 @@ public class CompositionIngredientService {
     public CompositionResponse getCompositionDetailsByName(String name) {
         Composition composition = compositionService.getCompositionByName(name);
         List<CompositionIngredient> compositionIngredientList = compositionIngredientRepository.findByComposition(composition);
-        //******display 'compositionIngredientList'
+        // Send to compositionResponseDTO : 'compositionIngredientList'
         CompositionResponse compositionResponse = new CompositionResponse();
         compositionResponse.setCompositionIngredientList(compositionIngredientList);
         //iterate
@@ -102,7 +102,7 @@ public class CompositionIngredientService {
             //fetch ingredientIds
             ingredientIdList.add(i.getIngredient().getId());
         }
-        //******display 'ingredients'
+        // Send to compositionResponseDTO : 'ingredients'
         compositionResponse.setIngredients(ingredients);
         //find molecule_ingredients with ingredientIds in ingredientIdList
         for (Integer ingredientId : ingredientIdList) {
@@ -120,21 +120,11 @@ public class CompositionIngredientService {
         for (Integer m : moleculeIdList) {
             moleculeList.add(moleculeService.getMoleculeById(m));
         }
-        //******display 'moleculeList'
+        // Send to compositionResponseDTO : 'moleculeList'
         compositionResponse.setMoleculeList(moleculeList);
 
 
         return compositionResponse;
     }
-
-
-
-    // OTHER CUSTOM METHODS
-
-
-
-
-
-
 
 }

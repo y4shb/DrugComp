@@ -44,7 +44,9 @@ public class IngredientService {
 
 
     /* CUSTOM SERVICE METHODS */
-    //Second API
+
+    // SECOND API
+
     public List<CompositionIngredient> getCompositionsByIngredientNameStrengthUnit(String ingredientName, float strength, String unit) {
         int ingredientId = ingredientService.getIngredientByName(ingredientName).getId();
         return compositionIngredientRepository.findByIngredientAndStrengthAndUnit(ingredientId, strength, unit);
@@ -62,22 +64,34 @@ public class IngredientService {
         List<Composition> compositionList = compositionListTEMP.stream().distinct().collect(Collectors.toList());
         return compositionList;
     }
-    //Third API
+
+
+    // THIRD API
 
     // To Get Compositions containing given Ingredient of given strength and molecule with given rxRequired.
     public List<CompositionIngredient> getCompositionsByIngredientNameStrengthUnitRx(String ingredientName, float strength, String unit, Boolean rxRequired) {
         //fetch ingredientId from ingredientName
         int ingredientId = ingredientRepository.findOneByName(ingredientName).getId();
         List<CompositionIngredient> compositionIngredientListTEMP = compositionIngredientRepository.findByIngredientAndStrengthAndUnit(ingredientId, strength, unit);
-        //list to return :
+        // Initialise list to return :
         List<CompositionIngredient> compositionIngredients = new ArrayList<>();
+        /*
+        * We have a compositionIngredientListTEMP containing CompositionIngredients found using:
+        *       ingredientId
+        *       strength
+        *       unit
+        * To filter out ones with rx == rxRequired, iterate, find molecule and check for rx as follows
+        * */
         for(CompositionIngredient c : compositionIngredientListTEMP) {
             int ingrId = c.getIngredient().getId();
+            // Get list of MoleculeIngredients
             List<MoleculeIngredient> moleculeIngredientList = moleculeIngredientService.getMoleculeIngredientByIngredientId(ingrId);
+            // And corresponding moleculeIds
             List<Integer> moleculeIds = new ArrayList<>();
             for (MoleculeIngredient mi : moleculeIngredientList) {
                  moleculeIds.add(mi.getMolecule().getId());
             }
+            // For each molecule(from moleculeIds), find rxRequired
             List<Boolean> moleculeRxList = new ArrayList<>();
             for (Integer i : moleculeIds){
                 moleculeRxList.add(moleculeService.getMoleculeById(i).getRxRequired());
@@ -90,6 +104,8 @@ public class IngredientService {
                 else
                     flag = 0;
             }
+            //if flag == 1 after end of above loop, means all rx values  == rxRequired
+            //therefore add the compositionIngredient to list to return
             if (flag == 1)
                 compositionIngredients.add(c);
         }
@@ -98,46 +114,5 @@ public class IngredientService {
 
     }
 
-    /*UNDER PROGRESS*/
-    /*
-    public List<Composition> getCompositionsByIngredientNameStrengthUnitRx(String ingredientName, float strength, String unit, Boolean rxRequired) {
-        int ingredientId = ingredientService.getIngredientByName(ingredientName).getId();
-        List<CompositionIngredient> compositionIngredientList =  compositionIngredientRepository.findByIngredientAndStrengthAndUnit(ingredientId, strength, unit);
-        List<Integer> ingredientIdList = new ArrayList<>();
-        for(CompositionIngredient c : compositionIngredientList) {
-            ingredientIdList.add(c.getIngredient().getId());
-        }
-        List<MoleculeIngredient> moleculeIngredientList = new ArrayList<>();
-        for(int i : ingredientIdList) {
-             List<MoleculeIngredient> temp = moleculeIngredientService.getMoleculeIngredientByIngredientId(i);
-             moleculeIngredientList.addAll(temp);
-        }
-        List<Boolean> rxList = new ArrayList<>();
-        for(MoleculeIngredient mi : moleculeIngredientList) {
-            //BELOW IS LIST OF RXREQUIRED. IF THIS IS EQUAL TO INPUT RX VALUE : ONLY THEN SHOW THAT COMPOSITION
-            //USE FOR LOOPS IN NESTED IF STATEMENTS - LOGIC FOR FILTERING COMPOSITIONS ON THIS BASIS NEEDED.
-            rxList.add(moleculeService.getMoleculeById(mi.getMolecule().getId()).getRxRequired());
-        }
-        //filter out above based on RX
-        List<Composition> compositionListTEMP = new ArrayList<>();
-        for(CompositionIngredient c : compositionIngredientList) {
-            compositionListTEMP.add(c.getComposition());
-        }
-
-        List<Composition> compositionList = compositionListTEMP.stream().distinct().collect(Collectors.toList());
-        return compositionList;
-    }
-    public List<Composition> getCompositionsByIngredientIdStrengthUnitRx(int ingredientId, float strength, String unit, Boolean rxRequired) {
-        List<CompositionIngredient> compositionIngredientList =  compositionIngredientRepository.findByIngredientAndStrengthAndUnit(ingredientId, strength, unit);
-        //filter out above based on RX
-        List<Composition> compositionListTEMP = new ArrayList<>();
-        for(CompositionIngredient c : compositionIngredientList) {
-            compositionListTEMP.add(c.getComposition());
-        }
-
-        List<Composition> compositionList = compositionListTEMP.stream().distinct().collect(Collectors.toList());
-        return compositionList;
-    }
-    */
 
 }
