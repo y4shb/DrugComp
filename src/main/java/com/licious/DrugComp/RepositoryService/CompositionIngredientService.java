@@ -25,18 +25,19 @@ public class CompositionIngredientService {
     @Autowired
     private MoleculeService moleculeService;
 
-    @Autowired
-    private CompositionResponse compositionResponse;
+
+
+    //private CompositionResponse compositionResponse;
 
     public List<CompositionIngredient> getCompositionIngredientByIngredient(Ingredient ingredient) {
-        return compositionIngredientRepository.findAllByIngredient(ingredient);
+        return compositionIngredientRepository.findByIngredient(ingredient);
     }
-    public List<CompositionIngredient> getCompositionIngredientByISU(Ingredient ingredientId, Float strength, String unit) {
-        return compositionIngredientRepository.findAllByIngredientStrengthUnit(ingredientId, strength, unit);
+    public List<CompositionIngredient> getCompositionIngredientByISU(String ingredientName, float strength, String unit) {
+        IngredientService ingredientService = new IngredientService();
+        int ingredientId = ingredientService.getIngredientByName(ingredientName).getId();
+        return compositionIngredientRepository.findByIngredientAndStrengthAndUnit(ingredientId, strength, unit);
     }
-    public List<CompositionIngredient> getCompositionIngredientByISURx(Ingredient ingredientID, Float strength, String unit, Boolean rxRequired) {
-        return compositionIngredientRepository.findAllByIngredientStrengthUnitRx(ingredientID, strength, unit, rxRequired);
-    }
+
 
     /* CUSTOM SERVICE METHODS */
     //First API
@@ -44,11 +45,12 @@ public class CompositionIngredientService {
         Composition composition = compositionService.getCompositionById(compId);
         List<CompositionIngredient> compositionIngredientList = compositionIngredientRepository.findByComposition(composition);
         //******display 'compositionIngredientList'
+        CompositionResponse compositionResponse = new CompositionResponse();
         compositionResponse.setCompositionIngredientList(compositionIngredientList);
         //iterate
-        List<Ingredient> ingredients = null;
+        List<Ingredient> ingredients = new ArrayList<>();
         List<Integer> ingredientIdList = new ArrayList<>();
-        List<MoleculeIngredient> moleculeIngredientList = null;
+        List<MoleculeIngredient> moleculeIngredientList = new ArrayList<>();
         List<Integer> moleculeIdListTEMP = new ArrayList<>();
         for(CompositionIngredient i : compositionIngredientList) {
             //fetch Ingredients
@@ -60,17 +62,17 @@ public class CompositionIngredientService {
         compositionResponse.setIngredients(ingredients);
         //find molecule_ingredients with ingredientIds in ingredientIdList
         for(Integer ingredientId : ingredientIdList) {
-            moleculeIngredientList.addAll(moleculeIngredientRepository.findAllByIngredientId(ingredientId));
+            moleculeIngredientList.addAll(moleculeIngredientRepository.findByIngredientId(ingredientId));
 
         }
         //fetch moleculeIds from moleculeIngredients
         for(MoleculeIngredient moleculeIngredient : moleculeIngredientList) {
-            moleculeIdListTEMP.add(moleculeIngredient.getMoleculeId());
+            moleculeIdListTEMP.add(moleculeIngredient.getMolecule().getId());
         }
         //get distinct moleculeIds
         List<Integer> moleculeIdList = moleculeIdListTEMP.stream().distinct().collect(Collectors.toList());
         //get molecules
-        List<Molecule> moleculeList = null;
+        List<Molecule> moleculeList = new ArrayList<>();
         for(Integer m : moleculeIdList) {
             moleculeList.add(moleculeService.getMoleculeById(m));
         }
@@ -87,11 +89,12 @@ public class CompositionIngredientService {
         Composition composition = compositionService.getCompositionByName(name);
         List<CompositionIngredient> compositionIngredientList = compositionIngredientRepository.findByComposition(composition);
         //******display 'compositionIngredientList'
+        CompositionResponse compositionResponse = new CompositionResponse();
         compositionResponse.setCompositionIngredientList(compositionIngredientList);
         //iterate
-        List<Ingredient> ingredients = null;
+        List<Ingredient> ingredients = new ArrayList<>();
         List<Integer> ingredientIdList = new ArrayList<>();
-        List<MoleculeIngredient> moleculeIngredientList = null;
+        List<MoleculeIngredient> moleculeIngredientList = new ArrayList<>();
         List<Integer> moleculeIdListTEMP = new ArrayList<>();
         for (CompositionIngredient i : compositionIngredientList) {
             //fetch Ingredients
@@ -103,17 +106,17 @@ public class CompositionIngredientService {
         compositionResponse.setIngredients(ingredients);
         //find molecule_ingredients with ingredientIds in ingredientIdList
         for (Integer ingredientId : ingredientIdList) {
-            moleculeIngredientList.addAll(moleculeIngredientRepository.findAllByIngredientId(ingredientId));
+            moleculeIngredientList.addAll(moleculeIngredientRepository.findByIngredientId(ingredientId));
 
         }
         //fetch moleculeIds from moleculeIngredients
         for (MoleculeIngredient moleculeIngredient : moleculeIngredientList) {
-            moleculeIdListTEMP.add(moleculeIngredient.getMoleculeId());
+            moleculeIdListTEMP.add(moleculeIngredient.getMolecule().getId());
         }
         //get distinct moleculeIds
         List<Integer> moleculeIdList = moleculeIdListTEMP.stream().distinct().collect(Collectors.toList());
         //get molecules
-        List<Molecule> moleculeList = null;
+        List<Molecule> moleculeList = new ArrayList<>();
         for (Integer m : moleculeIdList) {
             moleculeList.add(moleculeService.getMoleculeById(m));
         }

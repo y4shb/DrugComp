@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CompositionResponse implements Serializable {
+public class CompositionResponse {
     List<CompositionIngredient> compositionIngredientList;
     List<Ingredient> ingredients;
     List<Molecule> moleculeList;

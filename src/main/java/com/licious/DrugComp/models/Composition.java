@@ -3,7 +3,6 @@ package com.licious.DrugComp.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,6 +15,7 @@ import java.util.List;
 @ToString
 @Table(name = "compositions")
 @Data
+@Entity
 public class Composition {
 
     @Id
@@ -24,6 +24,7 @@ public class Composition {
     private String name;
 
     @OneToMany(mappedBy = "composition")
+    @JsonIgnore(value = true)
     private List<CompositionIngredient> compositionIngredientList;
 
 

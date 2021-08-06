@@ -15,7 +15,7 @@ public class CompositionService {
     private CompositionRepository compositionRepository;
 
     public Composition getCompositionById(int id) {
-        return compositionRepository.findById(id);
+        return compositionRepository.findById(id).get();
     }
     public Composition getCompositionByName(String name) {
         return compositionRepository.findByName(name);

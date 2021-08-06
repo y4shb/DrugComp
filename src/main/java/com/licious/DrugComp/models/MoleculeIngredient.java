@@ -11,6 +11,7 @@ import javax.persistence.*;
 @ToString
 @Table(name = "molecule_ingredients")
 @Data
+@Entity
 public class MoleculeIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,10 +19,10 @@ public class MoleculeIngredient {
 
     //Foreign key to Molecule.molID;
     @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "molecule_id", referencedColumnName = "molecule.id")
-    private int moleculeId;
+    @JoinColumn(name = "molecule_id", referencedColumnName = "id")
+    private Molecule molecule;
     //Add Foreign key to Ingredient.ingdID;
     @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "ingredient_id", referencedColumnName = "ingredient.id")
-    private int ingredientId;
+    @JoinColumn(name = "ingredient_id", referencedColumnName = "id")
+    private Ingredient ingredient;
 }

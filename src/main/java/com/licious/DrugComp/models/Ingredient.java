@@ -11,6 +11,7 @@ import javax.persistence.*;
 @ToString
 @Table(name = "ingredients")
 @Data
+@Entity
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

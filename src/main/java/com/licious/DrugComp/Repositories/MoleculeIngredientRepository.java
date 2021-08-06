@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface MoleculeIngredientRepository extends JpaRepository {
+public interface MoleculeIngredientRepository extends JpaRepository<MoleculeIngredient, Integer> {
     MoleculeIngredient findById(int id);
-    List<MoleculeIngredient> findAllByMoleculeId(int moleculeId);
-    List<MoleculeIngredient> findAllByIngredientId(int ingredientId);
+    List<MoleculeIngredient> findByMoleculeId(int moleculeId);
+    List<MoleculeIngredient> findByIngredientId(int ingredientId);
 }

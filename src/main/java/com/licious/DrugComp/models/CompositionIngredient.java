@@ -11,6 +11,7 @@ import javax.persistence.*;
 @ToString
 @Table(name = "composition_ingredients")
 @Data
+@Entity
 public class CompositionIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,11 +19,15 @@ public class CompositionIngredient {
 
     //add foreign key to Composition.id
     @JoinColumn(name = "composition_id",referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.MERGE)
     private Composition composition;
     //add foreign key to Ingredient.id
     @JoinColumn(name = "ingredient_id",referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.MERGE)
     private Ingredient ingredient;
 
     private String unit;
-    private Float strength;
+    private float strength;
+
+
 }

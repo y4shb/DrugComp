@@ -5,9 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CompositionRepository extends JpaRepository {
-    List<Composition> findAll();
-    Composition findById(int id);
+public interface CompositionRepository extends JpaRepository<Composition, Integer> {
     Composition findByName(String name);
 
 }

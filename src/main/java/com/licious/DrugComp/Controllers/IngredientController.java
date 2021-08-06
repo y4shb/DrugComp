@@ -1,9 +1,8 @@
 package com.licious.DrugComp.Controllers;
 
-import com.licious.DrugComp.RepositoryService.CompositionIngredientService;
 import com.licious.DrugComp.RepositoryService.IngredientService;
-import com.licious.DrugComp.dto.CompositionResponse;
 import com.licious.DrugComp.models.Composition;
+import com.licious.DrugComp.models.CompositionIngredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,33 +15,38 @@ public class IngredientController {
     @Autowired
     IngredientService ingredientService;
 
-    // Second API
+    /*
+    * SECOND API : Give all compositions where ingredient is X with strength S and unit U
+    * */
     @GetMapping("/ingredient/ISU/id")
     public List<Composition> getCompositionDetailsbyISUId(@RequestParam("ingredient_id") int ingredientId,
-                                                          @RequestParam("strength") Float strength,
+                                                          @RequestParam("strength") float strength,
                                                           @RequestParam("unit") String unit) {
         return ingredientService.getCompositionsByIngredientIdStrengthUnit(ingredientId, strength, unit);
     }
     @GetMapping("/ingredient/ISU/name")
-    public List<Composition> getCompositionDetailsbyISUName(@RequestParam("name") String ingredientName,
-                                                              @RequestParam("strength") Float strength,
-                                                              @RequestParam("unit") String unit) {
+    public List<CompositionIngredient> getCompositionDetailsbyISUName(@RequestParam("name") String ingredientName,
+                                                                      @RequestParam("strength") float strength,
+                                                                      @RequestParam("unit") String unit) {
         return ingredientService.getCompositionsByIngredientNameStrengthUnit(ingredientName, strength, unit);
     }
 
-    // Third API
-    @GetMapping("/ingredient/ISURx/id")
-    public List<Composition> getCompositionDetailsbyISURxId(@RequestParam("ingredient_id") int ingredientId,
-                                                          @RequestParam("strength") Float strength,
-                                                          @RequestParam("unit") String unit,
-                                                            @RequestParam("rxRequired") Boolean rxRequired) {
+    /*
+    *  THIRD API : Give all compositions where ingredient is X with strength S and unit U and rx_required is Y
+    * */
+    @GetMapping("ingredient/ISURx/id")
+    public List<Composition> getCompositionDetailsByISURxId(@RequestParam("ingredient_id") int ingredientId,
+                                                              @RequestParam("strength") float strength,
+                                                              @RequestParam("unit") String unit,
+                                                              @RequestParam("rx_required") Boolean rxRequired) {
         return ingredientService.getCompositionsByIngredientIdStrengthUnitRx(ingredientId, strength, unit, rxRequired);
     }
-    @GetMapping("/ingredient/ISURx/name")
-    public List<Composition> getCompositionDetailsbyISURxName(@RequestParam("name") String ingredientName,
-                                                            @RequestParam("strength") Float strength,
-                                                            @RequestParam("unit") String unit,
-                                                            @RequestParam("rxRequired") Boolean rxRequired) {
+    @GetMapping("ingredient/ISURx/name")
+    public List<Composition> getCompositionDetailsByISURxName(@RequestParam("name") String ingredientName,
+                                                              @RequestParam("strength") float strength,
+                                                              @RequestParam("unit") String unit,
+                                                              @RequestParam("rx_required") Boolean rxRequired) {
         return ingredientService.getCompositionsByIngredientNameStrengthUnitRx(ingredientName, strength, unit, rxRequired);
     }
+
 }

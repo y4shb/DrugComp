@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface MoleculeRepository extends JpaRepository {
+public interface MoleculeRepository extends JpaRepository<Molecule, Integer> {
     List<Molecule> findAll();
     Molecule findById(int id);
     List<Molecule> findByName(String name);
