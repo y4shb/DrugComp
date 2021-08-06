@@ -3,10 +3,8 @@ package com.licious.DrugComp.RepositoryService;
 import com.licious.DrugComp.Repositories.CompositionIngredientRepository;
 import com.licious.DrugComp.Repositories.CompositionRepository;
 import com.licious.DrugComp.Repositories.IngredientRepository;
-import com.licious.DrugComp.models.Composition;
-import com.licious.DrugComp.models.CompositionIngredient;
-import com.licious.DrugComp.models.Ingredient;
-import com.licious.DrugComp.models.MoleculeIngredient;
+import com.licious.DrugComp.Repositories.MoleculeRepository;
+import com.licious.DrugComp.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +26,8 @@ public class IngredientService {
     private MoleculeIngredientService moleculeIngredientService;
     @Autowired
     private MoleculeService moleculeService;
+    @Autowired
+    private MoleculeRepository moleculeRepository;
 
 
     public Ingredient getIngredientById(int id) {
@@ -35,7 +35,7 @@ public class IngredientService {
     }
 
     public Ingredient getIngredientByName(String name) {
-        return ingredientRepository.findByName(name);
+        return ingredientRepository.findOneByName(name);
     }
 
     public List<Ingredient> getAllIngredients() {
@@ -63,6 +63,40 @@ public class IngredientService {
         return compositionList;
     }
     //Third API
+
+    // To Get Compositions containing given Ingredient of given strength and molecule with given rxRequired.
+    public List<CompositionIngredient> getCompositionsByIngredientNameStrengthUnitRx(String ingredientName, float strength, String unit, Boolean rxRequired) {
+        //fetch ingredientId from ingredientName
+        int ingredientId = ingredientRepository.findOneByName(ingredientName).getId();
+        List<CompositionIngredient> compositionIngredientListTEMP = compositionIngredientRepository.findByIngredientAndStrengthAndUnit(ingredientId, strength, unit);
+        //list to return :
+        List<CompositionIngredient> compositionIngredients = new ArrayList<>();
+        for(CompositionIngredient c : compositionIngredientListTEMP) {
+            int ingrId = c.getIngredient().getId();
+            List<MoleculeIngredient> moleculeIngredientList = moleculeIngredientService.getMoleculeIngredientByIngredientId(ingrId);
+            List<Integer> moleculeIds = new ArrayList<>();
+            for (MoleculeIngredient mi : moleculeIngredientList) {
+                 moleculeIds.add(mi.getMolecule().getId());
+            }
+            List<Boolean> moleculeRxList = new ArrayList<>();
+            for (Integer i : moleculeIds){
+                moleculeRxList.add(moleculeService.getMoleculeById(i).getRxRequired());
+            }
+            //iterate through Boolean List moleculeRxList and if all values are == rxRequired, compositionIngredients.add(c);
+            int flag = 0;
+            for(Boolean rx : moleculeRxList) {
+                if(rx == rxRequired)
+                    flag = 1;
+                else
+                    flag = 0;
+            }
+            if (flag == 1)
+                compositionIngredients.add(c);
+        }
+        return compositionIngredients;
+
+
+    }
 
     /*UNDER PROGRESS*/
     /*
