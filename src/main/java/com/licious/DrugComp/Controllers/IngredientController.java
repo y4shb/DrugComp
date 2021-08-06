@@ -31,9 +31,11 @@ public class IngredientController {
         return ingredientService.getCompositionsByIngredientNameStrengthUnit(ingredientName, strength, unit);
     }
 
+
+    
     /*
     *  THIRD API : Give all compositions where ingredient is X with strength S and unit U and rx_required is Y
-    * */
+    * .
     @GetMapping("ingredient/ISURx/id")
     public List<Composition> getCompositionDetailsByISURxId(@RequestParam("ingredient_id") int ingredientId,
                                                               @RequestParam("strength") float strength,
@@ -48,5 +50,6 @@ public class IngredientController {
                                                               @RequestParam("rx_required") Boolean rxRequired) {
         return ingredientService.getCompositionsByIngredientNameStrengthUnitRx(ingredientName, strength, unit, rxRequired);
     }
+   */
 
 }

@@ -64,6 +64,8 @@ public class IngredientService {
     }
     //Third API
 
+    /*UNDER PROGRESS*/
+    /*
     public List<Composition> getCompositionsByIngredientNameStrengthUnitRx(String ingredientName, float strength, String unit, Boolean rxRequired) {
         int ingredientId = ingredientService.getIngredientByName(ingredientName).getId();
         List<CompositionIngredient> compositionIngredientList =  compositionIngredientRepository.findByIngredientAndStrengthAndUnit(ingredientId, strength, unit);
@@ -102,6 +104,6 @@ public class IngredientService {
         List<Composition> compositionList = compositionListTEMP.stream().distinct().collect(Collectors.toList());
         return compositionList;
     }
-
+    */
 
 }
