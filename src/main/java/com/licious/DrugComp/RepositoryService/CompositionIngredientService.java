@@ -1,7 +1,10 @@
 package com.licious.DrugComp.RepositoryService;
 
 import com.licious.DrugComp.Repositories.*;
+import com.licious.DrugComp.Utils.CompositionUtils;
 import com.licious.DrugComp.dto.CompositionResponse;
+import com.licious.DrugComp.dto.IngredientInfo;
+import com.licious.DrugComp.dto.request.CompositionDetailsRequest;
 import com.licious.DrugComp.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,8 @@ public class CompositionIngredientService {
     private MoleculeIngredientRepository moleculeIngredientRepository;
     @Autowired
     private MoleculeService moleculeService;
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
 
 
@@ -125,6 +130,83 @@ public class CompositionIngredientService {
 
 
         return compositionResponse;
+    }
+
+    // OTHER CUSTOM SERVICE METHODS :
+
+    public String addCompositionDetails(CompositionDetailsRequest inputRequest, String compositionName) {
+        List<String> allIngredientNames = getIngredientList();
+        List<String> allMoleculeNames = getMoleculeList();
+        List<String> allCompositionNames = getCompositionList();
+        // CHECK THE LINE BELOW AND VERIFY
+        Boolean rxRequired = inputRequest.getRx_required().booleanValue();
+
+        List<IngredientInfo> ingredientInfoList = inputRequest.getIngredients();
+        for(IngredientInfo ingredient : ingredientInfoList) {
+            String ingredientName = ingredient.getName();
+            float strength = ingredient.getStrength();
+            String unit = ingredient.getUnit();
+
+            if(allIngredientNames.indexOf(ingredientName) == -1) {
+                return "ingredient : " + ingredientName + " does not exist. Add Composition Failed :(";
+            }
+        }
+        List<String> ingredientNames = ingredientInfoList.stream().map(i->i.getName()).collect(Collectors.toList());
+        String moleculeName = CompositionUtils.getMoleculeName(ingredientNames);
+        if(allMoleculeNames.indexOf(moleculeName) == -1) {
+            Molecule moleculeX = new Molecule();
+            moleculeX.setName(moleculeName);
+            moleculeX.setRxRequired(rxRequired);
+            moleculeRepository.save(moleculeX);
+        }
+        Molecule molecule = moleculeRepository.findOneByName(moleculeName).get();
+        molecule.setRxRequired(rxRequired);
+        moleculeRepository.save(molecule);
+
+        int moleculeId = molecule.getId();
+        if(allCompositionNames.indexOf(compositionName) > 0) {
+            return "Composition ALready Exists!";
+        }
+        else {
+            Composition compositionX = new Composition();
+            compositionX.setName(compositionName);
+            compositionRepository.save(compositionX);
+        }
+        Composition composition = compositionRepository.findOneByName(compositionName).get();
+        int compositionId = composition.getId();
+
+        for(IngredientInfo ingredientInfo : ingredientInfoList) {
+            Ingredient ingredient = ingredientRepository.findOneByName(ingredientInfo.getName());
+
+            composition = null;
+            composition = compositionRepository.findById(compositionId).get();
+
+            CompositionIngredient compositionIngredientX = new CompositionIngredient();
+            compositionIngredientX.setComposition(composition);
+            compositionIngredientX.setIngredient(ingredient);
+            compositionIngredientX.setStrength(ingredientInfo.getStrength());
+            compositionIngredientX.setUnit(ingredientInfo.getUnit());
+            compositionIngredientRepository.save(compositionIngredientX);
+
+            MoleculeIngredient moleculeIngredientX = new MoleculeIngredient();
+            moleculeIngredientX.setMolecule(molecule);
+            moleculeIngredientX.setIngredient(ingredient);
+            moleculeIngredientRepository.save(moleculeIngredientX);
+        }
+
+        return "Add Composition Details Successful!";
+
+    }
+
+
+    public List<String> getIngredientList(){
+        return ingredientRepository.findAll().stream().map(t->t.getName()).collect(Collectors.toList());
+    }
+    public List<String> getMoleculeList(){
+        return moleculeRepository.findAll().stream().map(t->t.getName()).collect(Collectors.toList());
+    }
+    public List<String> getCompositionList(){
+        return compositionRepository.findAll().stream().map(t->t.getName()).collect(Collectors.toList());
     }
 
 }
