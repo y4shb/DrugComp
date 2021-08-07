@@ -1,0 +1,42 @@
+
+[
+{
+
+"ingredients": [
+{
+"name": "paracetamol",
+"strength": 650.0,
+"unit": "MG"
+}
+],
+"rx_required": false
+},
+
+
+
+{
+"ingredients": [
+{
+"name": "paracetamol",
+"strength": 200.0,
+"unit": "MG"
+},
+{
+"name": "diclofenac",
+"strength": 2.5,
+"unit": "MGG"
+},
+{
+"name": "aspirin",
+"strength": 2.0,
+"unit": "v/v"
+}
+],
+"rx_required": true
+}
+]
+
+
+
+
+

@@ -1,0 +1,13 @@
+API Requests 
+
+First API : 
+
+			http://localhost:8080/composition/id?composition_id=1
+
+Second API :
+
+			http://localhost:8080/ingredient/ISU/name?name=paracetamol&strength=500&unit=MG
+
+Third API : 
+
+			http://localhost:8080/ingredient/ISURx/name?name=paracetamol&strength=200&unit=MG&rx_required=true

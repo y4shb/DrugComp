@@ -1,0 +1,1 @@
+[{"id":3,"composition":{"id":2,"name":"paracetamol (500 MG) + diclofenac (5 MGG)"},"ingredient":{"id":1,"name":"paracetamol"},"unit":"MG","strength":500.0},{"id":5,"composition":{"id":3,"name":"paracetamol (500 MG) + diclofenac (25 MGG)"},"ingredient":{"id":1,"name":"paracetamol"},"unit":"MG","strength":500.0}]
